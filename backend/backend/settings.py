@@ -224,3 +224,8 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 ASGI_APPLICATION = "backend.asgi.application"
 
 AUTH_USER_MODEL = 'api.CostumeUser'
+
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATIC_URL = 'static/'
