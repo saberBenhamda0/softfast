@@ -14,6 +14,10 @@ from pathlib import Path
 from datetime import timedelta
 import os
 
+import environ
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,10 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-fpy=r%&wc3sf@xa*@ikjg+y2c7f($7_g#@qw3zo4743q0_lg3r'
+SECRET_KEY = env('django_secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
 CORS_ALLOW_ALL_ORIGINS = True
 ALLOWED_HOSTS = ['*']
@@ -94,7 +98,6 @@ REST_FRAMEWORK = {
 
 }
 
-AUTH_USER_MODEL = 'api.CostumeUser'
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
@@ -150,10 +153,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': '4155',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'USER': env('POSTGRES_USER'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'HOST': env('POSTGRES_HOST'),
+        'PORT': env('POSTGRES_PORT'),
     }
 }
 
@@ -205,17 +208,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-PAYPAL_CLIENT_ID = "AYWd62mCkVqaZIcTHZNwU4QMXWChwL-5Ts4jEF16T04wAvkM-8CKyZp8_Wg6m91dB-SEqgyyEz5Z2QP4"
-PAYPAL_CLIENT_SECRET = "EE1l8vEF9YcfiFfVb87It6eylOhLFL0vF4eS8fXtA-XxkW0CDOfxZt94ozivnScWbr5BozlA3Kym4bLD"
-PAYPAL_ORDER_WEBHOOK_ID = "0TS62841VV6630325"
-PAYPAL_SUBSCRIBE_WEBHOOK_ID = "2PJ15820EU5614451"
+PAYPAL_CLIENT_ID = env('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = env('PAYPAL_CLIENT_SECRET')
+PAYPAL_ORDER_WEBHOOK_ID = env('PAYPAL_ORDER_WEBHOOK_ID')
+PAYPAL_SUBSCRIBE_WEBHOOK_ID = env('PAYPAL_SUBSCRIBE_WEBHOOK_ID')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "saberbenhamda0@gmail.com"
-EMAIL_HOST_PASSWORD = "bfejkcdfzbobrtqj"
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 
 ASGI_APPLICATION = "backend.asgi.application"
+
+AUTH_USER_MODEL = 'api.CostumeUser'

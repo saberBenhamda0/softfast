@@ -94,7 +94,7 @@ const Navbar = () => {
       <div className='flex flex-row justify-between  w-3/4 text-[#999999] '>
         <button  onClick={access ? ()=>navigate('/shop') : ()=>navigate("/login")} className='hover:text-[#666666]  text-sm lg:text-base font-roboto ml-2'>Shop</button>
         <button onClick={access ? ()=>navigate('/pricing') : ()=>navigate("/login")} className='hover:text-[#666666]  text-sm lg:text-base ml-2'>pricing</button>
-        <button onClick={access ? ()=>navigate('/contact-us') : ()=>navigate("/login")} className='hover:text-[#666666]  text-sm lg:text-base ml-2'>contact-us</button>
+        <button onClick={access ? ()=>navigate('/contact-us') : ()=>navigate("/login")} className='hover:text-[#666666]  text-sm lg:text-base ml-2'>contacts</button>
       </div>
     <div className='flex flex-col items-center justify-center mr-0 w-60 lg:mr-10 '>
       <img

@@ -100,6 +100,7 @@ def signup(request):
     email = request.data.get("email")
     password = request.data.get("password")
     confirme_password = request.data.get("confirme_password")
+    admin = User.objects.get(id=24)
 
     if password == confirme_password:
 
@@ -117,6 +118,8 @@ def signup(request):
         )
         created_user.set_password(password)
         created_user.save()
+        user = User.objects.get(username=username)
+        Conversation.objects.create(first_user=user, second_user=admin)
     return Response({"response":" user has been created with success"}, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
