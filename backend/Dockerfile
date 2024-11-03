@@ -1,9 +1,16 @@
 FROM python:3.11-alpine
 
-RUN pip install django 
-
 ENV settings=backend.settings
 
+RUN apk update @@ apt add --no-cache \ 
+    gcc \ 
+    musl-dev \ 
+    postgresql-dev \
+    libffi-dev
+#gcc is a c compiler
+#help compiling c programes
+#dev header for postgreSQL
+#this allow a program an a lanquage to call a function in another language
 COPY . /backend
 
 WORKDIR /backend

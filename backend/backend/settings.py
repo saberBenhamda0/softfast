@@ -32,7 +32,9 @@ SECRET_KEY = env('django_secret_key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://softfast.s3-website-us-east-1.amazonaws.com',
+]
 ALLOWED_HOSTS = ['*']
 
 
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'whitenoise',
     'django_filters',
     'corsheaders',
     'api',
@@ -59,9 +62,10 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -200,6 +204,16 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+
+STORAGES = {
+    "default": {
+    "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -229,3 +243,21 @@ AUTH_USER_MODEL = 'api.CostumeUser'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATIC_URL = 'static/'
+
+# aws configuration for setup s3 bucket
+
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')  #
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+# For serving static files directly from S3
+AWS_S3_URL_PROTOCOL = 'https'
+AWS_S3_USE_SSL = True
+AWS_S3_VERIFY = True
+
+# Static and media file configuration
+STATIC_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/static/'
+
+MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/media/'
